@@ -76,6 +76,9 @@ def search_tracks(token: str, query: str, limit: int = 50) -> List[Dict[str, Any
     headers = {"Authorization": f"Bearer {token}"}
     params = {"q": query, "type": "track", "limit": min(limit, 50)}  # API limit is 50
 
+    print("HEADERS: ", headers)
+    print("params: ", params)
+
     try:
         response = requests.get(SEARCH_ENDPOINT, headers=headers, params=params)
         response.raise_for_status()
