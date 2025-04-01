@@ -30,19 +30,21 @@ else:
     st.session_state.spotify_token = None
     st.error("Failed to get token. Check credentials.")
 
-if st.session_state.spotify_token:
-    st.success("Token is active.")
-else:
+if not st.session_state.spotify_token:
     st.warning("Token not available. Please authenticate.")
 
 # --- Track Search Section ---
 st.header("Fetch Tracks")
-search_query = st.text_input(
-    "Enter a search query (e.g., artist, track, genre):", value="Discover"
-)
-search_limit = st.slider("Number of tracks to fetch (max 50):", 10, 50, 25)
 
-if st.button("Fetch Tracks & Analyze"):
+# Use a form so that pressing Enter in the text input submits the form
+with st.form(key="track_search_form"):
+    search_query = st.text_input(
+        "Enter a search query (e.g., artist, track, genre):", value=""
+    )
+    search_limit = st.slider("Number of tracks to fetch (max 50):", 1, 50, 25)
+    submit_search = st.form_submit_button(label="Fetch Tracks & Analyze")
+
+if submit_search:
     token = st.session_state.get("spotify_token", None)
 
     if not token:
